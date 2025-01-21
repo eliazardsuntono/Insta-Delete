@@ -1,14 +1,20 @@
+from instagrapi import Client
 import os
 from dotenv import load_dotenv
-from instagrapi import Client
 
 load_dotenv()
-
-USERNAME = os.getenv('USERNAME')
-PASSWORD = os.getenv('PASSWORD')
-
+user = os.getenv('USERNAME')
+password = os.getenv('PASSWORD')
 cl = Client()
-cl.login(username=USERNAME, password=PASSWORD, verification_code='939538')
+cl.login(user, password)
 
-following = cl.user_following(amount=50)
-print(following)
+followers = cl.user_followers(cl.user_id)
+following = cl.user_following(cl.user_id)
+
+not_following = []
+for user in following.keys():
+    if user not in followers:
+        not_following.append(user)
+
+for user in not_following:
+    print(user)
